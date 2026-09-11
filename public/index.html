@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="description" content="DevOps Shack interactive Node.js deployment demo powered by Express and ngrok." />
+  <title>DevOps Shack | Node.js + ngrok Deployment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="DevOps Shack home">
+      <span class="brand-mark"><span>DS</span></span>
+      <span class="brand-copy">
+        <strong>DevOps Shack</strong>
+        <small>Build · Deploy · Automate</small>
+      </span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#architecture">Architecture</a>
+      <a href="#stack">Stack</a>
+      <a href="#live">Live API</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="header-actions">
+      <span class="live-pill"><span class="pulse-dot"></span> Application Online</span>
+      <button class="menu-button" id="menuButton" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+      <a href="#architecture">Architecture</a>
+      <a href="#stack">Stack</a>
+      <a href="#live">Live API</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section-shell">
+      <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span>●</span> HANDS-ON DEPLOYMENT LAB</div>
+        <h1>
+          From <span class="gradient-text">localhost</span><br />
+          to the <span class="gradient-text">internet.</span>
+        </h1>
+        <p>
+          A practical DevOps Shack demo showing how a Node.js + Express application
+          can run locally and become publicly accessible through an ngrok tunnel.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary magnetic" href="#live">
+            <span>Test Live API</span><span class="button-arrow">↗</span>
+          </a>
+          <a class="button button-secondary" href="#architecture">Explore Architecture</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat reveal">
+            <strong data-count="3000">0</strong>
+            <span>Local Port</span>
+          </div>
+          <div class="stat reveal">
+            <strong data-count="1">0</strong>
+            <span>Express Server</span>
+          </div>
+          <div class="stat reveal">
+            <strong data-count="100" data-suffix="%">0</strong>
+            <span>Hands-on</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" data-tilt>
+        <div class="terminal-window">
+          <div class="terminal-topbar">
+            <div class="window-dots"><i></i><i></i><i></i></div>
+            <span>devopsshack@deployment-lab</span>
+            <span class="secure-chip">● secure</span>
+          </div>
+          <div class="terminal-body" aria-label="Animated terminal demo">
+            <div class="terminal-line"><span class="prompt">$</span> <span class="typed-line" id="typedLine"></span><span class="terminal-caret">▋</span></div>
+            <div class="terminal-output" id="terminalOutput"></div>
+          </div>
+        </div>
+
+        <div class="floating-card float-one">
+          <span class="floating-icon">N</span>
+          <div><strong>Node.js</strong><small>Runtime</small></div>
+        </div>
+        <div class="floating-card float-two">
+          <span class="floating-icon tunnel-icon">↗</span>
+          <div><strong>ngrok</strong><small>Secure Tunnel</small></div>
+        </div>
+        <div class="floating-card float-three">
+          <span class="floating-icon api-icon">{ }</span>
+          <div><strong>REST API</strong><small>/api/status</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Technology ticker">
+      <div class="ticker-track">
+        <span>NODE.JS</span><i>✦</i><span>EXPRESS</span><i>✦</i><span>NGROK</span><i>✦</i><span>REST API</span><i>✦</i><span>DEVOPS</span><i>✦</i><span>LOCALHOST → INTERNET</span><i>✦</i>
+        <span>NODE.JS</span><i>✦</i><span>EXPRESS</span><i>✦</i><span>NGROK</span><i>✦</i><span>REST API</span><i>✦</i><span>DEVOPS</span><i>✦</i><span>LOCALHOST → INTERNET</span><i>✦</i>
+      </div>
+    </section>
+
+    <section id="architecture" class="content-section section-shell">
+      <div class="section-heading reveal">
+        <div class="eyebrow"><span>01</span> REQUEST FLOW</div>
+        <h2>See the deployment path<br /><span class="muted-heading">at a glance.</span></h2>
+        <p>The application remains on your machine. ngrok creates a secure public tunnel that forwards incoming requests to Express on port 3000.</p>
+      </div>
+
+      <div class="architecture-flow reveal">
+        <article class="flow-node interactive-card" data-step="01">
+          <div class="flow-icon">◉</div>
+          <span class="node-label">LOCAL</span>
+          <h3>Node.js App</h3>
+          <p>Express serves the website and API from your machine.</p>
+          <code>localhost:3000</code>
+        </article>
+
+        <div class="flow-connector"><span></span><b>HTTP</b></div>
+
+        <article class="flow-node interactive-card featured-node" data-step="02">
+          <div class="flow-icon">↗</div>
+          <span class="node-label">TUNNEL</span>
+          <h3>ngrok</h3>
+          <p>Creates a secure tunnel and gives your local app a public URL.</p>
+          <code>ngrok http 3000</code>
+        </article>
+
+        <div class="flow-connector"><span></span><b>HTTPS</b></div>
+
+        <article class="flow-node interactive-card" data-step="03">
+          <div class="flow-icon">◎</div>
+          <span class="node-label">PUBLIC</span>
+          <h3>Internet User</h3>
+          <p>Anyone with the ngrok URL can reach the application.</p>
+          <code>browser / curl</code>
+        </article>
+      </div>
+    </section>
+
+    <section id="stack" class="content-section alt-section">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div class="eyebrow"><span>02</span> TECHNOLOGY STACK</div>
+          <h2>Small stack.<br /><span class="muted-heading">Clear DevOps concepts.</span></h2>
+        </div>
+
+        <div class="stack-grid">
+          <article class="stack-card reveal interactive-card">
+            <div class="stack-number">01</div>
+            <div class="stack-logo node-logo">JS</div>
+            <h3>Node.js</h3>
+            <p>JavaScript runtime that runs the backend server outside the browser.</p>
+            <div class="tag-row"><span>Runtime</span><span>Backend</span></div>
+          </article>
+
+          <article class="stack-card reveal interactive-card">
+            <div class="stack-number">02</div>
+            <div class="stack-logo express-logo">Ex</div>
+            <h3>Express</h3>
+            <p>Minimal web framework used to serve static files and build the status API.</p>
+            <div class="tag-row"><span>Web Server</span><span>REST</span></div>
+          </article>
+
+          <article class="stack-card reveal interactive-card">
+            <div class="stack-number">03</div>
+            <div class="stack-logo ngrok-logo">↗</div>
+            <h3>ngrok</h3>
+            <p>Secure tunneling service that exposes localhost through a public HTTPS URL.</p>
+            <div class="tag-row"><span>Tunnel</span><span>HTTPS</span></div>
+          </article>
+
+          <article class="stack-card reveal interactive-card">
+            <div class="stack-number">04</div>
+            <div class="stack-logo api-logo">API</div>
+            <h3>Status API</h3>
+            <p>A real backend endpoint you can call from the UI or directly with curl.</p>
+            <div class="tag-row"><span>JSON</span><span>Health</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="live" class="content-section section-shell">
+      <div class="section-heading reveal">
+        <div class="eyebrow"><span>03</span> LIVE BACKEND CHECK</div>
+        <h2>Don’t just look at it.<br /><span class="muted-heading">Interact with it.</span></h2>
+        <p>Trigger a real request from this browser to the Express backend and inspect the response.</p>
+      </div>
+
+      <div class="api-lab reveal">
+        <div class="api-toolbar">
+          <div class="endpoint-box">
+            <span class="method">GET</span>
+            <code>/api/status</code>
+          </div>
+          <button class="button button-primary magnetic" id="sendRequest">
+            <span id="sendRequestText">Send Request</span><span>▶</span>
+          </button>
+        </div>
+
+        <div class="api-grid">
+          <div class="response-panel">
+            <div class="panel-heading">
+              <span>Response</span>
+              <span class="response-badge" id="responseBadge">Ready</span>
+            </div>
+            <pre id="apiResponse"><code>{
+  "hint": "Click Send Request to call the backend"
+}</code></pre>
+          </div>
+
+          <div class="metrics-panel">
+            <div class="metric-card">
+              <span>Status</span>
+              <strong id="metricStatus">—</strong>
+              <small id="metricStatusNote">Waiting for request</small>
+            </div>
+            <div class="metric-card">
+              <span>Latency</span>
+              <strong id="metricLatency">—</strong>
+              <small>Browser → Express</small>
+            </div>
+            <div class="metric-card">
+              <span>Uptime</span>
+              <strong id="metricUptime">—</strong>
+              <small>Node.js process</small>
+            </div>
+            <div class="metric-card">
+              <span>Server Time</span>
+              <strong id="metricTime">—</strong>
+              <small>ISO timestamp</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="curl-row">
+          <div><span class="prompt">$</span><code id="curlCommand">curl <span class="current-origin"></span>/api/status</code></div>
+          <button id="copyCurl" aria-label="Copy curl command">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section alt-section">
+      <div class="section-shell steps-layout">
+        <div class="section-heading reveal">
+          <div class="eyebrow"><span>04</span> HOW IT WORKS</div>
+          <h2>Three commands.<br /><span class="muted-heading">One public app.</span></h2>
+        </div>
+
+        <div class="steps-list">
+          <article class="step-item reveal">
+            <div class="step-index">01</div>
+            <div class="step-copy"><h3>Install dependencies</h3><p>Install Express and everything declared in <code>package.json</code>.</p></div>
+            <code class="step-command">npm install</code>
+          </article>
+          <article class="step-item reveal">
+            <div class="step-index">02</div>
+            <div class="step-copy"><h3>Start the application</h3><p>Run the Node.js server locally on port 3000.</p></div>
+            <code class="step-command">npm start</code>
+          </article>
+          <article class="step-item reveal">
+            <div class="step-index">03</div>
+            <div class="step-copy"><h3>Expose with ngrok</h3><p>Create a secure tunnel from a public HTTPS address to localhost.</p></div>
+            <code class="step-command">ngrok http 3000</code>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="content-section section-shell about-section">
+      <div class="about-card reveal">
+        <div class="about-copy">
+          <div class="eyebrow"><span>DEVOPS SHACK</span></div>
+          <h2>Learn what happens<br />behind the command.</h2>
+          <p>
+            DevOps Shack focuses on practical DevOps, Cloud, DevSecOps, Kubernetes,
+            Infrastructure as Code, automation and AI for DevOps—using hands-on,
+            production-oriented learning instead of isolated theory.
+          </p>
+          <div class="principles">
+            <span>Practical First</span><span>Production Mindset</span><span>Real Projects</span>
+          </div>
+        </div>
+        <div class="about-graphic" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="about-brand-mark">DS</div>
+          <span class="orbit-dot dot-one"></span><span class="orbit-dot dot-two"></span><span class="orbit-dot dot-three"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <a class="brand compact-brand" href="#top">
+        <span class="brand-mark"><span>DS</span></span>
+        <span class="brand-copy"><strong>DevOps Shack</strong><small>Learn · Build · Automate</small></span>
+      </a>
+      <p>Node.js + Express + ngrok deployment lab</p>
+      <a href="#top" class="back-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied to clipboard</div>
+  <script src="/app.js"></script>
+</body>
+</html>
